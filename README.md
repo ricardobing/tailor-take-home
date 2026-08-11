@@ -2,7 +2,7 @@
 
 Menú de restaurante con carrito de compras y **Google Sheets como backend**, vía Apps Script Web App. Take-home resuelto como si fuera a producción: tests, CI/CD, estados de error, idempotencia y validación server-side.
 
-**URL live:** `PENDIENTE — se completa al deployar en GitHub Pages`
+**URL live:** https://ricardobing.github.io/tailor-take-home/
 
 ## Cómo funciona
 

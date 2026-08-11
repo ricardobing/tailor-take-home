@@ -32,7 +32,9 @@ jobs:
         env:
           # El menú se snapshotea en build contra el endpoint real; si la var no
           # está definida o el endpoint falla, el build sigue con el fallback.
-          PUBLIC_SHEETS_API_URL: ${{ vars.PUBLIC_SHEETS_API_URL }}
+          # La URL /exec no es un secreto (el navegador la expone igual); la var
+          # de repo permite override sin tocar código.
+          PUBLIC_SHEETS_API_URL: ${{ vars.PUBLIC_SHEETS_API_URL || 'https://script.google.com/macros/s/AKfycbwruaySOwRQaUCZRgnp4jdno78wRKtqXCwtu8mcccKCAsIlqSy_1FwmKog21n_uafqx/exec' }}
           SITE_URL: https://${{ github.repository_owner }}.github.io
           BASE_PATH: /${{ github.event.repository.name }}
         run: npm run build
