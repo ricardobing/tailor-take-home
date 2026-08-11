@@ -23,8 +23,12 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - name: Habilitar GitHub Pages (idempotente)
+      # Intenta habilitar Pages solo; si el token no alcanza (primer run en un
+      # repo recién creado), se habilita una vez a mano: Settings > Pages >
+      # Source: GitHub Actions. No frena el CI.
+      - name: Habilitar GitHub Pages (best effort)
         uses: actions/configure-pages@v5
+        continue-on-error: true
         with:
           enablement: true
       - run: npm ci
