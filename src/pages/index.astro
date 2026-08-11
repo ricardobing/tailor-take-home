@@ -1,0 +1,43 @@
+---
+import { Shop } from '../components/Shop';
+import { fetchMenu } from '../lib/api';
+import fallback from '../data/fallback-menu.json';
+import type { Product } from '../lib/types';
+import '../styles/global.css';
+
+// Snapshot en build: si el endpoint responde, el HTML inicial sale con el menú
+// real; si no (o no hay URL configurada), sale con el fallback versionado.
+// En runtime la isla revalida contra el endpoint igual.
+const apiUrl = import.meta.env.PUBLIC_SHEETS_API_URL ?? '';
+let products: Product[] = fallback.products;
+let builtFromLive = false;
+if (apiUrl) {
+  try {
+    products = await fetchMenu(apiUrl);
+    builtFromLive = true;
+  } catch (err) {
+    console.warn('[build] No se pudo leer el menú desde Apps Script, usando fallback:', err);
+  }
+}
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Menú de La Pizzería del Sheet — pide online, directo a la cocina (vía Google Sheets)." />
+    <title>La Pizzería del Sheet</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>🍕 La Pizzería del Sheet</h1>
+      <p class="tagline">Del horno a tu casa, con parada técnica en una hoja de cálculo.</p>
+    </header>
+    <main>
+      <Shop client:load initialProducts={products} apiUrl={apiUrl} builtFromLive={builtFromLive} />
+    </main>
+    <footer class="site-footer">
+      <p>Take-home · Astro + Google Sheets · <a href="https://github.com/GITHUB_REPO_PLACEHOLDER">código fuente</a></p>
+    </footer>
+  </body>
+</html>

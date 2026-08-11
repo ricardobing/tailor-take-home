@@ -1,0 +1,13 @@
+{
+  "comment": "Snapshot de respaldo: espejo del SEED_MENU de apps-script/Code.gs. Se usa si en build no hay PUBLIC_SHEETS_API_URL o el endpoint falla — la página nunca queda vacía.",
+  "products": [
+    { "id": "margherita", "name": "Pizza Margherita", "description": "Salsa de tomate, mozzarella fresca y albahaca.", "price": 8990, "available": true },
+    { "id": "pepperoni", "name": "Pizza Pepperoni", "description": "Doble pepperoni, mozzarella y orégano.", "price": 10990, "available": true },
+    { "id": "cuatro-quesos", "name": "Pizza Cuatro Quesos", "description": "Mozzarella, gorgonzola, parmesano y queso de cabra.", "price": 11990, "available": true },
+    { "id": "napolitana", "name": "Pizza Napolitana", "description": "Tomate, mozzarella, anchoas, alcaparras y aceitunas.", "price": 10490, "available": true },
+    { "id": "hawaiana", "name": "Pizza Hawaiana", "description": "Jamón, piña caramelizada y mozzarella. Polémica y deliciosa.", "price": 9990, "available": true },
+    { "id": "vegetariana", "name": "Pizza Vegetariana", "description": "Pimientos, champiñones, cebolla morada, aceitunas y rúcula.", "price": 9490, "available": true },
+    { "id": "bebida-500", "name": "Bebida 500ml", "description": "Línea Coca-Cola, a elección al retirar.", "price": 1990, "available": true },
+    { "id": "tiramisu", "name": "Tiramisú", "description": "Clásico italiano de la casa, porción individual.", "price": 4490, "available": true }
+  ]
+}
