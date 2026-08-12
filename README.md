@@ -4,6 +4,8 @@ Menú de restaurante con carrito de compras y **Google Sheets como backend**, v�
 
 **URL live:** https://ricardobing.github.io/tailor-take-home/
 
+**Sheet (backend, solo lectura):** [menú y órdenes en vivo](https://docs.google.com/spreadsheets/d/1EmQXML762eJFWmLC6-C4l_bfv4m31fyeLc2NCkxRs48/edit) — compartido como *Lector* a propósito para facilitar la evaluación: haz un pedido en la URL live y mira aparecer la fila en la pestaña `orders`. No expone nada que el repo no exponga ya (la URL `/exec` del Apps Script es pública y permite leer el menú y escribir órdenes); solo agrega lectura de datos de demo. **En producción la hoja de órdenes jamás sería pública**: contiene datos de clientes (nombre + email).
+
 ## Cómo funciona
 
 ```
@@ -53,6 +55,7 @@ Se testea donde vive el riesgo: lógica pura del carrito (aritmética de dinero 
 - **Sin auth ni pagos**: el endpoint es público e inherente al stack pedido. Cualquiera puede postear una orden; se mitiga (honeypot, validación, re-pricing, límites de tamaño) y se asume como limitación documentada.
 - El menú cambia con baja frecuencia: snapshot en build + cache de 60s + revalidación client-side es suficiente frescura.
 - Email: solo validación de formato, sin verificación.
+- El Sheet se comparte en modo lectura como decisión de demo (ver arriba): las "órdenes" son datos de prueba con emails `@example.com`. Con clientes reales, la hoja quedaría privada y la evaluación se haría con un entorno de staging.
 - Navegadores evergreen, responsive desktop/mobile.
 - El carrito ignora silenciosamente productos que ya no existen o quedaron no disponibles entre visitas (quedaron en localStorage).
 
