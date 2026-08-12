@@ -111,3 +111,130 @@ Creado launch.json, usado 13 herramientas
 Creado 2 archivos, ejecutado 2 comandos, editado 2 archivos
 +89
 -1
+
+github creado. Una vez terminado el readme, push! https://github.com/ricardobing/tailor-take-home
+
+Repo creado — actualizo el link del footer y la URL live en el README, commiteo y pusheo:
+
+
+Editado 3 archivos, ejecutado 3 comandos, usado 3 herramientas
++6
+-2
+shell en segundo plano completado
+Workflow CI+Deploy de tailor-take-home
+El workflow falló — investigo cuál run y en qué paso:
+
+
+Ejecutado 3 comandos, editado deploy.yml, usado 6 herramientas
++5
+-1
+Fila Prueba UI confirmada en orders (24470/24470, received) — el circuito UI → Apps Script → Sheet está cerrado de punta a punta.
+
+Estado actual:
+
+Pieza	Estado
+Backend Apps Script (deploy, idempotencia, re-pricing, honeypot)	✅ Verificado con smoke tests reales
+Frontend (menú, carrito, checkout, orden real desde la UI)	✅ Verificado en browser
+Tests (36) + typecheck estricto	✅ Pasando
+Repo ricardobing/tailor-take-home	✅ Pusheado
+CI (tests + build)	⏳ Corriendo (te aviso cuando termine)
+Deploy a GitHub Pages	⛔ Bloqueado por un click tuyo
+Necesito una acción tuya (1 click): el token del workflow no puede habilitar Pages en un repo recién creado. Andá a Settings → Pages y en Source elegí "GitHub Actions". Avisame y re-disparo el deploy (o apretá "Re-run" en el último run de Actions, da igual).
+
+Quedan pendientes para la entrega:
+
+Ese click de Pages + deploy verde → verifico la URL live.
+chat.md: al final de todo, exportá esta conversación completa (/export en Claude Code) y reemplazá el contenido del archivo — hoy tiene un placeholder con las instrucciones. Lo commiteás y pusheás antes de pegar la URL en el formulario (yo te dejo el comando listo).
+El CI volvió a fallar — miro qué paso:
+
+Inspected failing steps of latest run
+shell en segundo plano completado
+CI del commit 62ffdff (Pages best-effort)
+
+Ejecutado 5 comandos
+El take home, pide desplegar. No es el link de github la url a compartir. Donde recomendas para hacerlo rapido?
+Github podesacceder en el broswer ahora. No estaba logeado.
+
+
+Usado 6 herramientas
+Pages habilitado (Source: GitHub Actions ✓). Ahora reviso el run en curso — y de paso, con tu sesión puedo ver el log del npm ci que falló antes:
+
+
+Usado 2 herramientas
+Falló de nuevo en 19s — es determinístico. Abro el log:
+
+
+Ejecutado 4 comandos, usado 5 herramientas
+Avanza — ahora pide @emnapi/wasi-threads@1.2.2. Reviso qué versiones hay y completo:
+
+
+Ejecutado 3 comandos, usado una herramienta
+Resumen de dónde estamos:
+
+Tu pregunta sobre dónde deployar: ya está resuelto con GitHub Pages — es lo más rápido porque no requiere ninguna cuenta nueva: el workflow del repo buildea y publica solo. La URL live (la que va al README y ya está puesta ahí) es https://ricardobing.github.io/tailor-take-home/, distinta del link del repo.
+
+Lo que hice con tu sesión de GitHub:
+
+Habilité Pages en Settings (Source: GitHub Actions) — era el bloqueo del deploy.
+Leí el log del CI que fallaba: npm ci moría por un bug conocido de npm en Windows — el lockfile no registraba @emnapi/runtime, @emnapi/core y un wasi-threads pineado (dependencias opcionales de la variante wasm de sharp, que Astro trae). Linux sí los exige.
+Lo arreglé promoviendo las entradas desde copias que ya estaban en el lock, validé con npm ci --dry-run + los 36 tests, y pusheé (d6ddaf3).
+El CI está corriendo ahora con Pages habilitado — te aviso apenas termine y verifico la URL live en el browser.
+
+CI en verde 🎉 — verifico la URL live:
+
+Navigated
+shell en segundo plano completado
+CI del fix de lockfile (d6ddaf3)
+
+Usado 8 herramientas
+✅ Deploy verificado en producción de punta a punta. Orden enviada desde https://ricardobing.github.io/tailor-take-home/ → confirmación con referencia UUID → fila en la hoja orders. El sitio revalida el menú contra Apps Script en vivo (sin banner de stale = endpoint respondiendo).
+
+Checklist del enunciado, punto por punto:
+
+Requisito	Estado
+Página que lee productos del Sheet y los renderiza como tarjetas	✅
+Párrafo de preparar pizza en el README (aparece 2× en el enunciado — documentado como supuesto)	✅
+Carrito client-side: agregar/quitar, subtotales, total	✅
+"Enviar orden" → POST → fila en orders (nombre, email, items JSON, totales, timestamp)	✅
+Deploy público + URL live en README	✅ GitHub Pages, CI verde
+README: URL live, "con otra hora", supuestos	✅
+Repo público	✅ ricardobing/tailor-take-home
+chat.md con la transcripción cruda	⏳ único pendiente — es tuyo
+Extras que quedaron (el "plus"): 36 tests (incluyendo el logic.gs de producción testeado desde Vitest), idempotencia de órdenes, re-pricing server-side con total_mismatch, honeypot, snapshot de menú en build con fallback, carrito persistente, CI/CD completo, PLAN.md con las decisiones.
+
+Último paso antes de pegar la URL en el formulario (el reloj corre hasta ese momento):
+
+Exportá esta conversación completa: en Claude Code, /export (o copiá todo el transcript) y reemplazá el contenido de chat.md — crudo, sin curar.
+Commit y push:
+Pegá https://github.com/ricardobing/tailor-take-home en el campo del formulario.
+Dato de color del proceso que quedó documentado en el repo: el único bug real de toda la sesión fue el lockfile de npm generado en Windows que omitía dependencias opcionales de Linux (@emnapi/*, bug conocido npm/cli#4828) — el fix está explicado en el mensaje del commit d6ddaf3, y es exactamente el tipo de "callejón sin salida" que piden ver en chat.md.
+
+Perfecto. Ya acgregue el chat. Deberia agregar el link al spreadsheet publico o mejor no por seguridad? 
+docs.google.com/spreadsheets/d/1EmQXML762eJFWmLC6-C4l_bfv4m31fyeLc2NCkxRs48/edit?gid=507606856#gid=507606856
+
+Sí, agregalo — pero en modo solo lectura, y documentado como decisión consciente. Mi razonamiento:
+
+Por qué conviene:
+
+Le hace la evaluación sin fricción: el evaluador hace un pedido en la URL live y ve aparecer la fila en orders en tiempo real. Es la demo más convincente posible de que el backend funciona.
+No expone nada que no esté ya expuesto: la URL /exec del Apps Script ya es pública en el repo (está en el workflow y en el network tab del sitio), así que cualquiera ya puede leer el menú y escribir órdenes. El link a la hoja solo agrega lectura de lo que ya se puede escribir.
+Los datos son 100% de demo (emails @example.com de los smoke tests).
+El matiz de seguridad real (y esto es lo que vale oro documentar): en producción la hoja de órdenes jamás sería pública porque contiene datos de clientes (nombres + emails). Decir eso explícitamente en el README convierte el link en evidencia de criterio en vez de descuido.
+
+Cómo hacerlo:
+
+En el Sheet: Compartir → Acceso general → "Cualquier persona con el enlace" → rol "Lector" (no Editor — con Editor cualquiera te borra el menú).
+En el README, junto a la URL live, algo así:
+Sheet (backend, solo lectura): ver menú y órdenes en vivo — compartido como lector para facilitar la evaluación (se puede hacer un pedido en la URL live y ver aparecer la fila). En producción la hoja de órdenes no sería pública: contiene datos de clientes.
+
+Y un bullet en Supuestos con la misma idea.
+
+Si querés, configurá vos el paso 1 (el click de Compartir) y yo hago el paso 2: edito el README, commiteo y pusheo. Avisame cuando esté compartido como Lector.
+
+Ok, actualiza el readme con estas indicaciones, aclaraciones. Y link.
+
+
+Ejecutado 2 comandos, editado README.md
++3
+-0
+README actualizado y pusheado (acc5d07): el link al Sheet quedó junto a la URL live con la explicación de por qué se comparte (evaluación sin fricción, no expone nada nuevo, datos de demo) y la aclaración de que en producción jamás sería pública, más el bullet en Supuestos.
